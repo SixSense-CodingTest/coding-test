@@ -1,3 +1,6 @@
+# 
+# 펜
+
 N = int(input())
 t_shirt = list(map(int, input().split()))
 T, P = map(int, input().split())
