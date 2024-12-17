@@ -24,3 +24,5 @@ while n > m : m<<=1 # 비트연산자가 더 빠름
 print(2*n-m)
 # 32412kb
 # 36ms
+
+# https://oeis.org/search?q=1+2+2+4+2+4+6+8+2+4+6+8+10+12+14+16&language=english&go=Search
