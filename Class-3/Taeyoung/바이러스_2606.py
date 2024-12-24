@@ -1,23 +1,34 @@
 import sys
-import heapq
+from collections import deque
 
 input = sys.stdin.readline
 
-N = int(input())
+n = int(input())
+v = int(input())
 
-heap = []
+graph = [[] for _ in range(n+1)]
+visited = [0] * (n+1)
 
-for _ in range(N):
-    x = int(input())
-    if x == 0:
-        if len(heap) == 0:
-            print(0)
-        else:
-            print(heapq.heappop(heap))
-    else:
-        heapq.heappush(heap, x)
+for i in range(v):
+    a, b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
 
-'''
-메모리 : 38340 KB
-시간 : 112 ms
-'''
+visited[1] = 1
+Q = deque([1])
+
+while Q:
+    c = Q.popleft()
+
+    for i in graph[c]:
+        if visited[i] == 0:
+            Q.append(i)
+            visited[i] = 1
+
+print(sum(visited)-1)
+
+"""
+PyPy3
+메모리 : 34900 KB
+시간 : 60 ms
+"""
