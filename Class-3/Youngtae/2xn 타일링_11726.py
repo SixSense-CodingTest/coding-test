@@ -6,27 +6,43 @@
 # 2x4 의 경우 1+1+1+1, 1+1+2 * 3,  2+2 5개
 # 2x5 의 경우 1+1+1+1+1, 1+1+1+2 *4, 2+1+2 * 3, 8개
 # 직전 것 2개의 합인 느낌쓰
+
+## 1번 풀이
+# import sys
+
+# input = sys.stdin.readline
+
+# n = int(input())
+# numbers = [0] * 1001
+
+# i = 1
+# while i != n + 1:
+#     numbers[1] = 1
+#     numbers[2] = 2
+#     if n == 1:
+#         print(1)
+#         i += 1
+#         break
+#     elif n == 2:
+#         print(2)
+#         i += 1
+#         break
+#     numbers[i] = numbers[i - 1] + numbers[i - 2]
+#     i += 1
+
+# if n >=3:
+#     print(numbers[n] % 10007)
+
+
+# 2번 풀이
 import sys
 
 input = sys.stdin.readline
 
 n = int(input())
 numbers = [0] * 1001
-
-i = 1
-while i != n + 1:
-    numbers[1] = 1
-    numbers[2] = 2
-    if n == 1:
-        print(1)
-        i += 1
-        break
-    elif n == 2:
-        print(2)
-        i += 1
-        break
-    numbers[i] = numbers[i - 1] + numbers[i - 2]
-    i += 1
-
-if n >=3:
-    print(numbers[n] % 10007)
+numbers[1] = 1
+numbers[2] = 2
+for i in range(3, n+1):
+    numbers[i] = numbers[i-1] + numbers[i-2]
+print(numbers[n] % 10007)

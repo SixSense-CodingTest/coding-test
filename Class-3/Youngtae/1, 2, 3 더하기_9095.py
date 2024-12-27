@@ -14,5 +14,3 @@ for _ in range(T):
         numbers[i] = numbers[i-1] + numbers[i-2] + numbers[i-3]
     print(numbers[n])
 
-    
-
