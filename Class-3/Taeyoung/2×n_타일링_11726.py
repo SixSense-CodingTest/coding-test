@@ -20,6 +20,7 @@ print(dp[n] % 10007)
 시간 : 36 ms
 '''
 
+import sys
 
 input = sys.stdin.readline
 
