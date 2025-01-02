@@ -29,6 +29,12 @@ ans = float('inf')
 for i in range(N - 7): # 8 by 8이니까
     for j in range(M - 7):
         # sliding board 만들기
+        """
+        list는 행마다 열값을 봐서 행을 쌓아주는 방식으로 행렬 내의 작은 부분을 선택할 수 있다.
+        - numpy : a[0:2,0:2] 
+        - list : list1[0:2][0:2] - 안 됨
+        - list : list1[0][0:2] - 이렇게 해서 행을 for문 돌던지 아니면 아래 방식
+        """ 
         sliding_board = [row[j:j+8] for row in board[i:i+8]]
 
         # 두 가지 경우
