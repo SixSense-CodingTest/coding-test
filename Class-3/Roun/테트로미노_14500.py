@@ -5,66 +5,79 @@
 import sys
 from collections import deque
 
-def bfs(graph: list, start_point: tuple) -> int:
-    global total_visited
-    result = 0
+def dfs(graph: list, start_point: tuple, depth: int, score: int) -> int:
+    global result
+    global visited
 
-    queue = deque([(*start_point, set([start_point]), graph[start_point[0]][start_point[1]])])
+    y, x = start_point
+    
+    if depth == 4:
+        result = max(result, score)
+        return
 
-    while queue:
-        # print(queue)
+    for dy, dx in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
+        next_y, next_x = y + dy, x + dx
 
-        curr_y, curr_x, visited, score = queue.popleft()
+        if 0 <= next_x < len(graph[0]) and 0 <= next_y < len(graph) and not visited[next_y][next_x]:
+            visited[next_y][next_x] = True
+            dfs(graph, (next_y, next_x), depth + 1, score + graph[next_y][next_x])
+            visited[next_y][next_x] = False
 
-        if len(visited) == 4:
-            result = max(result, score)
-            total_visited.append(visited)
-            continue
-        elif len(visited) == 2:
-            targets = []
-            for dy, dx in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
-                next_y, next_x = curr_y + dy, curr_x + dx
+def fk(graph: list, start_point: tuple) -> int:
+    global result, shapes
 
-                if 0 <= next_y < len(graph) and 0 <= next_x < len(graph[0]) and (next_y, next_x) not in visited:
-                    next_visited = visited.union(set([(next_y, next_x)]))
-                    queue.append((next_y, next_x, next_visited, score + graph[next_y][next_x]))
+    y, x = start_point
 
-                    targets.append((next_y, next_x))
-            
-            for i in range(len(targets)):
-                for j in range(i + 1, len(targets)):
-                    result = max(result, score + graph[targets[i][0]][targets[i][1]] + graph[targets[j][0]][targets[j][1]])
-        else:
-            for dy, dx in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
-                next_y, next_x = curr_y + dy, curr_x + dx
+    for shape in shapes:
+        temp = graph[y][x]
+        check = True
 
-                if 0 <= next_y < len(graph) and 0 <= next_x < len(graph[0]) and (next_y, next_x) not in visited:
-                    next_visited = visited.union(set([(next_y, next_x)]))
-                    if next_visited not in total_visited:
-                        queue.append((next_y, next_x, next_visited, score + graph[next_y][next_x]))
-            
+        for dy, dx in shape:
+            next_y, next_x = y + dy, x + dx
+            if 0 <= next_x < len(graph[0]) and 0 <= next_y < len(graph):
+                temp += graph[next_y][next_x]
+            else:
+                check = False
+                break
         
-
-    return result
-
-def solve(graph: list) -> int:
-    result = 0
-
-    for i in range(len(graph)):
-        for j in range(len(graph[0])):
-            result = max(result, bfs(graph, (i, j)))
+        if check:
+            result = max(result, temp)
 
 
-    return result
 
 input = sys.stdin.readline
 
 row, col = map(int, input().split())
 graph = []
-total_visited = []
+visited = [[False for i in range(col)] for j in range(row)]
+result = 0
+
+shapes = [
+    [(-1, 0), (0, -1), (0, 1)], # ㅓ
+    [(1, 0), (0, -1), (0, 1)], # ㅏ
+    [(0, -1), (-1, 0), (1, 0)], # ㅗ
+    [(0, 1), (-1, 0), (1, 0)] # ㅜ
+]
 
 for _ in range(row):
     graph.append(list(map(int, input().split())))
 
-print(solve(graph))
-print(total_visited)
+for i in range(row):
+    for j in range(col):
+        visited[i][j] = True
+        dfs(graph, (i, j), 1, graph[i][j])
+        visited[i][j] = False
+
+        fk(graph, (i, j))
+
+print(result)
+
+###################
+# memory: 40212KB #
+# time:   5444ms  #
+###################
+
+# dfs로 일반적인 모양 처리
+# (dfs로 처리하므로 backtracking 활용해야해 visited 관리해야함 1개의 모양에 대해 탐색이 완료되면 다시 되돌려야하므로)
+# ㅗ모양 별도 처리 depth 2에서 갈 수 있는 2개의 방향을 탐색할까 했지만 미리 정의해두고 하는게 더 빠를 듯
+# 나중에 다시 구현해보자.
