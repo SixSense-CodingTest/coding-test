@@ -47,7 +47,11 @@ for i in range(N):
 
 visited = [[0]*M for _ in range(N)]
 graph_flatten = [j for i in graph for j in i ]
-if 0 not in graph_flatten and graph_flatten.count(-1) == graph_flatten.count(1):
+# if 0 not in graph_flatten and graph_flatten.count(-1) == graph_flatten.count(1):
+# count가 필요없었음
+# 저장될 때부터 모든 토마토가 익어있는 상태이면 0을 출력하는 부분에서 헷갈려서 count를 쓴 것 같음
+# if graph_flatten.count(-1) + graph_flatten.count(1) == M*N: 이걸 유도한듯
+if 0 not in graph_flatten:
     print(0)
 else:
     print(bfs(start, graph, visited))
