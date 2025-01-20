@@ -25,7 +25,7 @@ from collections import deque
 
 def find_min_time(N, K):
     visited = [False] * 100001
-    queue = deque((N,0))
+    queue = deque([(N,0)])
 
     visited[N] = True
     while queue:
