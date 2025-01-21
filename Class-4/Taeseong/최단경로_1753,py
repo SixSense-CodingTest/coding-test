@@ -1,0 +1,41 @@
+import sys
+import heapq
+
+input = sys.stdin.readline
+
+V,E = list(map(int,input().strip().split()))
+
+# graph = [[1e9]*(V+1) for _ in range(V+1)]
+graph = [[] for _ in range(V + 1)]
+
+dp = [1e9]*(V+1)
+
+start = int(input().strip())
+
+for _ in range(E):
+    u,v,w = list(map(int,input().strip().split()))
+    # if w < graph[u][v]:
+    #     graph[u][v] = w 
+    graph[u].append((v, w))
+
+Q = [(0,start)]
+dp[start] = 0
+
+while Q:
+    dist, v = heapq.heappop(Q)
+    
+    if dist>dp[v]:
+        continue
+
+    # for i in range(len(graph[v])):
+    for n,w in graph[v]:
+        # if graph[v][i] == 1e9:
+        #     continue
+        if dp[n] > dp[v]+w:
+            dp[n] = dp[v]+w
+            heapq.heappush(Q,(dp[n],n))
+
+print( *[ 'INF' if i == 1e9 else i for i in dp[1:] ],sep='\n',end='')
+
+
+
