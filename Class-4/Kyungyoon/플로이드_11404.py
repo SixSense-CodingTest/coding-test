@@ -33,3 +33,9 @@ for i in range(n):
         else:
             print(dist[i][j], end=' ')
     print() # 줄바꿈
+
+"""
+PyPy3
+메모리 : 111692 KB
+시간 : 168 ms
+"""
