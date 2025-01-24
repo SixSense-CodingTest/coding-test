@@ -26,9 +26,14 @@ for _ in range(m):
 def dijkstra(start, price_dict, price_board):
     heap = []
     heapq.heappush(heap, (0, start))  # (비용, 도시)
+    visited = [False] * (n + 1)  # 방문 여부 확인
 
     while heap:
         current_cost, current_city = heapq.heappop(heap)
+
+        if visited[current_city]:
+            continue
+        visited[current_city] = True
 
         for next_city, next_cost in price_dict[current_city]:
  
